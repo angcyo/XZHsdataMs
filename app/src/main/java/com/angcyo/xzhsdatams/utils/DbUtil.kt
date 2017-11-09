@@ -1,6 +1,7 @@
 package com.angcyo.xzproducems.utils
 
 import com.angcyo.library.utils.L
+import com.angcyo.xzhsdatams.bean.ProcBean
 import net.sourceforge.jtds.jdbc.JtdsResultSet
 
 /**
@@ -239,7 +240,162 @@ object DbUtil {
 //                })
 //        return result
 //    }
-//
+
+    /**
+     * 添加记录 proc_add（参数：
+    @ProductType AS nvarchar ,  --型号
+    @Lshou AS nvarchar ,  --厘数
+    @bianchang AS nvarchar , --边长
+    @MainTemp1 AS decimal , --主机温度1
+    @MainTemp2 AS decimal ,--主机温度2
+    @MainTemp3 AS decimal ,--主机温度3
+    @MainTemp4 AS decimal ,--主机温度4
+    @MainTemp5 AS decimal ,--主机温度5
+    @Mainspeed AS decimal ,--主机转速
+    @SUPPTemp11 AS decimal ,--辅机1温度1
+    @SUPPTemp12 AS decimal ,--辅机1温度2
+    @SUPPTemp13 AS decimal ,--辅机1温度3
+    @SUPPTemp14 AS decimal ,--辅机1温度4
+    @SUPPTemp15 AS decimal ,--辅机1温度5
+    @SUPPTemp21 AS decimal ,--辅机2温度1
+    @SUPPTemp22 AS decimal ,--辅机2温度2
+    @SUPPTemp23 AS decimal ,--辅机2温度3
+    @SUPPTemp24 AS decimal ,--辅机2温度4
+    @SUPPTemp25 AS decimal ,--辅机2温度5
+    @SUPPspeed1 AS decimal ,--辅机1转速
+    @SUPPspeed2 AS decimal ,--辅机2转速
+    @Memob AS text ,  --备注
+    @Pict01 AS text  --图片
+    ）
+     */
+
+    fun proc_add(procBean: ProcBean): Boolean {
+        var result = Jtds.prepareCall_update("proc_add", 23,
+                { jtdsCallableStatement ->
+                    jtdsCallableStatement.setInt("@ProductType", procBean.ProductType)
+                    jtdsCallableStatement.setInt("@Lshou", procBean.Lshou)
+                    jtdsCallableStatement.setInt("@bianchang", procBean.bianchang)
+                    jtdsCallableStatement.setInt("@MainTemp1", procBean.MainTemp1)
+                    jtdsCallableStatement.setInt("@MainTemp2", procBean.MainTemp2)
+                    jtdsCallableStatement.setInt("@MainTemp3", procBean.MainTemp3)
+                    jtdsCallableStatement.setInt("@MainTemp4", procBean.MainTemp4)
+                    jtdsCallableStatement.setInt("@MainTemp5", procBean.MainTemp5)
+                    jtdsCallableStatement.setInt("@Mainspeed", procBean.Mainspeed)
+                    jtdsCallableStatement.setInt("@SUPPTemp11", procBean.SUPPTemp11)
+                    jtdsCallableStatement.setInt("@SUPPTemp12", procBean.SUPPTemp12)
+                    jtdsCallableStatement.setInt("@SUPPTemp13", procBean.SUPPTemp13)
+                    jtdsCallableStatement.setInt("@SUPPTemp14", procBean.SUPPTemp14)
+                    jtdsCallableStatement.setInt("@SUPPTemp15", procBean.SUPPTemp15)
+                    jtdsCallableStatement.setInt("@SUPPTemp21", procBean.SUPPTemp21)
+                    jtdsCallableStatement.setInt("@SUPPTemp22", procBean.SUPPTemp22)
+                    jtdsCallableStatement.setInt("@SUPPTemp23", procBean.SUPPTemp23)
+                    jtdsCallableStatement.setInt("@SUPPTemp24", procBean.SUPPTemp24)
+                    jtdsCallableStatement.setInt("@SUPPTemp25", procBean.SUPPTemp25)
+                    jtdsCallableStatement.setInt("@SUPPspeed1", procBean.SUPPspeed1)
+                    jtdsCallableStatement.setInt("@SUPPspeed2", procBean.SUPPspeed2)
+                    jtdsCallableStatement.setString("@Memob", procBean.Memob)
+                    jtdsCallableStatement.setString("@Pict01", procBean.Pict01)
+                })
+        return result
+    }
+
+    fun proc_modi(id: Int, procBean: ProcBean): Boolean {
+        var result = Jtds.prepareCall_update("proc_add", 24,
+                { jtdsCallableStatement ->
+                    jtdsCallableStatement.setInt("@id", id)
+                    jtdsCallableStatement.setInt("@ProductType", procBean.ProductType)
+                    jtdsCallableStatement.setInt("@Lshou", procBean.Lshou)
+                    jtdsCallableStatement.setInt("@bianchang", procBean.bianchang)
+                    jtdsCallableStatement.setInt("@MainTemp1", procBean.MainTemp1)
+                    jtdsCallableStatement.setInt("@MainTemp2", procBean.MainTemp2)
+                    jtdsCallableStatement.setInt("@MainTemp3", procBean.MainTemp3)
+                    jtdsCallableStatement.setInt("@MainTemp4", procBean.MainTemp4)
+                    jtdsCallableStatement.setInt("@MainTemp5", procBean.MainTemp5)
+                    jtdsCallableStatement.setInt("@Mainspeed", procBean.Mainspeed)
+                    jtdsCallableStatement.setInt("@SUPPTemp11", procBean.SUPPTemp11)
+                    jtdsCallableStatement.setInt("@SUPPTemp12", procBean.SUPPTemp12)
+                    jtdsCallableStatement.setInt("@SUPPTemp13", procBean.SUPPTemp13)
+                    jtdsCallableStatement.setInt("@SUPPTemp14", procBean.SUPPTemp14)
+                    jtdsCallableStatement.setInt("@SUPPTemp15", procBean.SUPPTemp15)
+                    jtdsCallableStatement.setInt("@SUPPTemp21", procBean.SUPPTemp21)
+                    jtdsCallableStatement.setInt("@SUPPTemp22", procBean.SUPPTemp22)
+                    jtdsCallableStatement.setInt("@SUPPTemp23", procBean.SUPPTemp23)
+                    jtdsCallableStatement.setInt("@SUPPTemp24", procBean.SUPPTemp24)
+                    jtdsCallableStatement.setInt("@SUPPTemp25", procBean.SUPPTemp25)
+                    jtdsCallableStatement.setInt("@SUPPspeed1", procBean.SUPPspeed1)
+                    jtdsCallableStatement.setInt("@SUPPspeed2", procBean.SUPPspeed2)
+                    jtdsCallableStatement.setString("@Memob", procBean.Memob)
+                    jtdsCallableStatement.setString("@Pict01", procBean.Pict01)
+                })
+        return result
+    }
+
+    /**
+     * 搜索记录  proc_search（参数：@ProductType AS nvarchar ,  --型号，
+    @Lshou AS nvarchar ,  --厘数，
+    @Bianchang AS nvarchar  --边长）
+     */
+
+    fun proc_search(ProductType: Int, Lshou: Int, Bianchang: Int): MutableList<ProcBean> {
+        var result: MutableList<ProcBean> = mutableListOf()
+        Jtds.prepareCall_set("proc_search", 3,
+                { jtdsCallableStatement ->
+                    jtdsCallableStatement.setInt("ProductType", ProductType)
+                    jtdsCallableStatement.setInt("Lshou", Lshou)
+                    jtdsCallableStatement.setInt("Bianchang", Bianchang)
+                },
+                { jtdsResultSet ->
+                    //L.e("查询结果1:" + jtdsResultSet.getInt(0))
+
+                    while (jtdsResultSet.next()) {
+                        L.e("查询结果2:" + jtdsResultSet.getInt(0))
+
+//                        val bean = ProcBean(
+//                                jtdsResultSet.getString("FVID"),
+//                                jtdsResultSet.getString("DGID"),
+//                                jtdsResultSet.getString("GXID"),
+//                                jtdsResultSet.getString("PID"),
+//                                jtdsResultSet.getString("PNAME1"),
+//                                jtdsResultSet.getString("PNAME2"),
+//                                jtdsResultSet.getString("PNAME3"),
+//                                jtdsResultSet.getString("PNAME4"),
+//                                jtdsResultSet.getString("PNAME5"),
+//                                jtdsResultSet.getString("PNAME6"),
+//                                jtdsResultSet.getString("QTY1"),
+//                                jtdsResultSet.getString("QTY2"),
+//                                jtdsResultSet.getString("QTY3"),
+//                                jtdsResultSet.getString("QTY4"),
+//                                jtdsResultSet.getString("QTY5"),
+//                                jtdsResultSet.getString("QTY6"),
+//                                jtdsResultSet.getString("QTY7"),
+//                                jtdsResultSet.getString("DATE1"),
+//                                jtdsResultSet.getString("ADDDATE"),
+//                                jtdsResultSet.getString("USERID"),
+//                                jtdsResultSet.getString("USERNAME")
+//                        )
+//                        result.add(bean)
+                    }
+                })
+
+        return result
+    }
+
+    /**
+     * 删除记录 proc_del（参数：
+    @id as int,  -- id
+    @Password AS nvarchar  --密码
+    )
+     * */
+
+    fun proc_del(id: Int, Password: Int): Boolean {
+        var result = Jtds.prepareCall_update("proc_del", 2,
+                { jtdsCallableStatement ->
+                    jtdsCallableStatement.setInt("@id", id)
+                    jtdsCallableStatement.setInt("@Password", Password)
+                })
+        return result
+    }
+
 //    /**取订单数据*/
 //    fun UP_GET_DGID(DGID: String /*订单号*/ /*, GXID: Int *//*工序*/): MutableList<OrderBean> {
 //        var result: MutableList<OrderBean> = mutableListOf()

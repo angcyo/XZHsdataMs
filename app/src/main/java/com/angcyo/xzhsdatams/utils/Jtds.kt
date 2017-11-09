@@ -67,7 +67,7 @@ object Jtds {
             connection = Jtds.connectDB()
 
             val paramBuild = StringBuilder()
-            for (i in 0..paramCount - 1) {
+            for (i in 0 until paramCount) {
                 paramBuild.append("?")
                 paramBuild.append(",")
             }
