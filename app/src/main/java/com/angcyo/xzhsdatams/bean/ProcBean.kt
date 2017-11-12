@@ -13,9 +13,12 @@ package com.angcyo.xzhsdatams.bean
  */
 
 data class ProcBean(
-        var ProductType: Int = 0, // nvarchar=0=0, --型号
-        var Lshou: Int = 0, // nvarchar =0,  --厘数
-        var bianchang: Int = 0, // nvarchar =0, --边长
+        var Id: Int = 0, //返回时有效
+        var DhNo: String? = "",//返回时有效
+
+        var ProductType: String = "0", // nvarchar=0=0, --型号
+        var Lshou: String = "0", // nvarchar =0,  --厘数
+        var bianchang: String = "0", // nvarchar =0, --边长
         var MainTemp1: Int = 0, // decimal =0, --主机温度1
         var MainTemp2: Int = 0, // decimal =0,--主机温度2
         var MainTemp3: Int = 0, // decimal =0,--主机温度3
@@ -34,6 +37,6 @@ data class ProcBean(
         var SUPPTemp25: Int = 0, // decimal =0,--辅机2温度5
         var SUPPspeed1: Int = 0, // decimal =0,--辅机1转速
         var SUPPspeed2: Int = 0, // decimal =0,--辅机2转速
-        var Memob: String = "", // text =0,  --备注
-        var Pict01: String = "" // text  --图片
+        var Memob: String = "no", // text =0,  --备注
+        var Pict01: String = "nopic" // text  --图片
 )

@@ -12,9 +12,9 @@ import com.angcyo.xzhsdatams.iview.MainUIView
 class MainActivity : UILayoutActivity() {
 
     override fun initScreenOrientation() {
-        if (BuildConfig.DEBUG) {
+//        if (BuildConfig.DEBUG) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-        }
+//        }
     }
 
     override fun onLoadView(intent: Intent) {

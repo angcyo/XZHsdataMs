@@ -4,7 +4,258 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingEnd="@dimen/base_xhdpi"
+    android:paddingStart="@dimen/base_xhdpi"
     tools:context="com.angcyo.xzhsdatams.MainActivity">
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--主机温度-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:layout_width="100dp"
+                    android:layout_weight="0"
+                    android:text="主机温度:"/>
+
+                <EditText
+                    android:id="@+id/MainTemp1"
+                    style="@style/TextStyle"
+                    android:hint="主机温度1"/>
+
+                <EditText
+                    android:id="@+id/MainTemp2"
+                    style="@style/TextStyle"
+                    android:hint="主机温度2"/>
+
+                <EditText
+                    android:id="@+id/MainTemp3"
+                    style="@style/TextStyle"
+                    android:hint="主机温度3"/>
+
+                <EditText
+                    android:id="@+id/MainTemp4"
+                    style="@style/TextStyle"
+                    android:hint="主机温度4"/>
+
+                <EditText
+                    android:id="@+id/MainTemp5"
+                    style="@style/TextStyle"
+                    android:hint="主机温度5"/>
+
+                <EditText
+                    android:id="@+id/Mainspeed"
+                    style="@style/TextStyle"
+                    android:hint="主机转速"/>
+
+            </LinearLayout>
+
+            <!--辅机温度1-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:layout_width="100dp"
+                    android:layout_weight="0"
+                    android:text="辅机温度一:"/>
+
+                <EditText
+                    android:id="@+id/SUPPTemp11"
+                    style="@style/TextStyle"
+                    android:hint="辅机1温度1"/>
+
+                <EditText
+                    android:id="@+id/SUPPTemp12"
+                    style="@style/TextStyle"
+                    android:hint="辅机1温度2"/>
+
+                <EditText
+                    android:id="@+id/SUPPTemp13"
+                    style="@style/TextStyle"
+                    android:hint="辅机1温度3"/>
+
+                <EditText
+                    android:id="@+id/SUPPTemp14"
+                    style="@style/TextStyle"
+                    android:hint="辅机1温度4"/>
+
+                <EditText
+                    android:id="@+id/SUPPTemp15"
+                    style="@style/TextStyle"
+                    android:hint="辅机1温度5"/>
+
+                <EditText
+                    android:id="@+id/SUPPspeed1"
+                    style="@style/TextStyle"
+                    android:hint="辅机1速度"/>
+
+            </LinearLayout>
+
+            <!--辅机温度2-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:layout_width="100dp"
+                    android:layout_weight="0"
+                    android:text="辅机温度二:"/>
+
+                <EditText
+                    android:id="@+id/SUPPTemp21"
+                    style="@style/TextStyle"
+                    android:hint="辅机2温度1"/>
+
+                <EditText
+                    android:id="@+id/SUPPTemp22"
+                    style="@style/TextStyle"
+                    android:hint="辅机2温度2"/>
+
+                <EditText
+                    android:id="@+id/SUPPTemp23"
+                    style="@style/TextStyle"
+                    android:hint="辅机2温度3"/>
+
+                <EditText
+                    android:id="@+id/SUPPTemp24"
+                    style="@style/TextStyle"
+                    android:hint="辅机2温度4"/>
+
+                <EditText
+                    android:id="@+id/SUPPTemp25"
+                    style="@style/TextStyle"
+                    android:hint="辅机2温度5"/>
+
+                <EditText
+                    android:id="@+id/SUPPspeed2"
+                    style="@style/TextStyle"
+                    android:hint="辅机2速度"/>
+
+            </LinearLayout>
+
+            <!--搜索-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:layout_width="100dp"
+                    android:layout_weight="0"
+                    android:text="搜索:"/>
+
+                <EditText
+                    android:id="@+id/ProductType"
+                    style="@style/TextStyle"
+                    android:hint="型号(必填)"/>
+
+                <EditText
+                    android:id="@+id/bianchang"
+                    style="@style/TextStyle"
+                    android:hint="边长(选填)"/>
+
+                <EditText
+                    android:id="@+id/Lshou"
+                    style="@style/TextStyle"
+                    android:hint="厘数(选填)"/>
+
+                <com.angcyo.uiview.widget.Button
+                    android:id="@+id/search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/base_35dpi"
+                    android:paddingEnd="@dimen/base_xhdpi"
+                    android:paddingStart="@dimen/base_xhdpi"
+                    android:text="查询"/>
+
+
+            </LinearLayout>
+
+            <!--控制按钮-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.angcyo.uiview.widget.Button
+                    android:id="@+id/add_button"
+                    style="@style/TextStyle"
+                    android:layout_height="@dimen/base_35dpi"
+                    android:layout_marginEnd="@dimen/base_xhdpi"
+                    android:text="新增"/>
+
+                <com.angcyo.uiview.widget.Button
+                    android:id="@+id/modify_button"
+                    style="@style/TextStyle"
+                    android:layout_height="@dimen/base_35dpi"
+                    android:layout_marginEnd="@dimen/base_xhdpi"
+                    android:text="修改"/>
+
+                <com.angcyo.uiview.widget.Button
+                    android:id="@+id/delete_button"
+                    style="@style/TextStyle"
+                    android:layout_height="@dimen/base_35dpi"
+                    android:layout_marginEnd="@dimen/base_xhdpi"
+                    android:text="删除"/>
+
+                <com.angcyo.uiview.widget.Button
+                    android:id="@+id/save_button"
+                    style="@style/TextStyle"
+                    android:layout_height="@dimen/base_35dpi"
+                    android:layout_marginEnd="@dimen/base_xhdpi"
+                    android:text="保存"/>
+
+                <com.angcyo.uiview.widget.Button
+                    android:id="@+id/cancel_button"
+                    style="@style/TextStyle"
+                    android:layout_height="@dimen/base_35dpi"
+                    android:text="放弃"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.angcyo.uiview.widget.ExEditText
+                    android:id="@+id/Memob"
+                    style="@style/BaseMainTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="top"
+                    android:hint="备注"
+                    android:singleLine="false"
+                    android:maxLines="10"
+                    android:inputType="text"
+                    android:minHeight="80dp"/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    android:id="@+id/tip_view"
+                    style="@style/BaseMainTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 
 </FrameLayout>

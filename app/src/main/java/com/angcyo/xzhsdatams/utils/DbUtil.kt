@@ -272,9 +272,9 @@ object DbUtil {
     fun proc_add(procBean: ProcBean): Boolean {
         var result = Jtds.prepareCall_update("proc_add", 23,
                 { jtdsCallableStatement ->
-                    jtdsCallableStatement.setInt("@ProductType", procBean.ProductType)
-                    jtdsCallableStatement.setInt("@Lshou", procBean.Lshou)
-                    jtdsCallableStatement.setInt("@bianchang", procBean.bianchang)
+                    jtdsCallableStatement.setString("@ProductType", procBean.ProductType)
+                    jtdsCallableStatement.setString("@Lshou", procBean.Lshou)
+                    jtdsCallableStatement.setString("@bianchang", procBean.bianchang)
                     jtdsCallableStatement.setInt("@MainTemp1", procBean.MainTemp1)
                     jtdsCallableStatement.setInt("@MainTemp2", procBean.MainTemp2)
                     jtdsCallableStatement.setInt("@MainTemp3", procBean.MainTemp3)
@@ -303,9 +303,9 @@ object DbUtil {
         var result = Jtds.prepareCall_update("proc_add", 24,
                 { jtdsCallableStatement ->
                     jtdsCallableStatement.setInt("@id", id)
-                    jtdsCallableStatement.setInt("@ProductType", procBean.ProductType)
-                    jtdsCallableStatement.setInt("@Lshou", procBean.Lshou)
-                    jtdsCallableStatement.setInt("@bianchang", procBean.bianchang)
+                    jtdsCallableStatement.setString("@ProductType", procBean.ProductType)
+                    jtdsCallableStatement.setString("@Lshou", procBean.Lshou)
+                    jtdsCallableStatement.setString("@bianchang", procBean.bianchang)
                     jtdsCallableStatement.setInt("@MainTemp1", procBean.MainTemp1)
                     jtdsCallableStatement.setInt("@MainTemp2", procBean.MainTemp2)
                     jtdsCallableStatement.setInt("@MainTemp3", procBean.MainTemp3)
@@ -336,46 +336,66 @@ object DbUtil {
     @Bianchang AS nvarchar  --边长）
      */
 
-    fun proc_search(ProductType: Int, Lshou: Int, Bianchang: Int): MutableList<ProcBean> {
+    fun proc_search(ProductType: Int, Lshou: Int? = null, Bianchang: Int? = null): MutableList<ProcBean> {
         var result: MutableList<ProcBean> = mutableListOf()
-        Jtds.prepareCall_set("proc_search", 3,
-                { jtdsCallableStatement ->
-                    jtdsCallableStatement.setInt("ProductType", ProductType)
-                    jtdsCallableStatement.setInt("Lshou", Lshou)
-                    jtdsCallableStatement.setInt("Bianchang", Bianchang)
-                },
-                { jtdsResultSet ->
-                    //L.e("查询结果1:" + jtdsResultSet.getInt(0))
 
-                    while (jtdsResultSet.next()) {
-                        L.e("查询结果2:" + jtdsResultSet.getInt(0))
+        fun onResult(jtdsResultSet: JtdsResultSet) {
+            //L.e("查询结果1:" + jtdsResultSet.getInt(0))
 
-//                        val bean = ProcBean(
-//                                jtdsResultSet.getString("FVID"),
-//                                jtdsResultSet.getString("DGID"),
-//                                jtdsResultSet.getString("GXID"),
-//                                jtdsResultSet.getString("PID"),
-//                                jtdsResultSet.getString("PNAME1"),
-//                                jtdsResultSet.getString("PNAME2"),
-//                                jtdsResultSet.getString("PNAME3"),
-//                                jtdsResultSet.getString("PNAME4"),
-//                                jtdsResultSet.getString("PNAME5"),
-//                                jtdsResultSet.getString("PNAME6"),
-//                                jtdsResultSet.getString("QTY1"),
-//                                jtdsResultSet.getString("QTY2"),
-//                                jtdsResultSet.getString("QTY3"),
-//                                jtdsResultSet.getString("QTY4"),
-//                                jtdsResultSet.getString("QTY5"),
-//                                jtdsResultSet.getString("QTY6"),
-//                                jtdsResultSet.getString("QTY7"),
-//                                jtdsResultSet.getString("DATE1"),
-//                                jtdsResultSet.getString("ADDDATE"),
-//                                jtdsResultSet.getString("USERID"),
-//                                jtdsResultSet.getString("USERNAME")
-//                        )
-//                        result.add(bean)
-                    }
-                })
+            while (jtdsResultSet.next()) {
+//                        for (i in 1..30) {
+//                            L.e("查询结果2:" + jtdsResultSet.getString(i))
+//                        }
+                val bean = ProcBean(
+                        jtdsResultSet.getInt("Id"),
+                        jtdsResultSet.getString("DhNo"),
+                        jtdsResultSet.getString("ProductType"),
+                        jtdsResultSet.getString("Lshou"),
+                        jtdsResultSet.getString("bianchang"),
+                        jtdsResultSet.getInt("MainTemp1"),
+                        jtdsResultSet.getInt("MainTemp2"),
+                        jtdsResultSet.getInt("MainTemp3"),
+                        jtdsResultSet.getInt("MainTemp4"),
+                        jtdsResultSet.getInt("MainTemp5"),
+                        jtdsResultSet.getInt("Mainspeed"),
+                        jtdsResultSet.getInt("SUPPTemp11"),
+                        jtdsResultSet.getInt("SUPPTemp12"),
+                        jtdsResultSet.getInt("SUPPTemp13"),
+                        jtdsResultSet.getInt("SUPPTemp14"),
+                        jtdsResultSet.getInt("SUPPTemp15"),
+                        jtdsResultSet.getInt("SUPPTemp21"),
+                        jtdsResultSet.getInt("SUPPTemp22"),
+                        jtdsResultSet.getInt("SUPPTemp23"),
+                        jtdsResultSet.getInt("SUPPTemp24"),
+                        jtdsResultSet.getInt("SUPPTemp25"),
+                        jtdsResultSet.getInt("SUPPspeed1"),
+                        jtdsResultSet.getInt("SUPPspeed2"),
+                        jtdsResultSet.getString("Memob"),
+                        jtdsResultSet.getString("Pict01")
+                )
+                result.add(bean)
+            }
+        }
+
+        if (Lshou == null || Bianchang == null) {
+            Jtds.prepareCall_set("proc_search", 1,
+                    { jtdsCallableStatement ->
+                        jtdsCallableStatement.setInt("ProductType", ProductType)
+                    },
+                    { jtdsResultSet ->
+                        onResult(jtdsResultSet)
+                    })
+        } else {
+            Jtds.prepareCall_set("proc_search", 3,
+                    { jtdsCallableStatement ->
+                        jtdsCallableStatement.setInt("ProductType", ProductType)
+                        jtdsCallableStatement.setInt("Lshou", Lshou)
+                        jtdsCallableStatement.setInt("Bianchang", Bianchang)
+                    },
+                    { jtdsResultSet ->
+                        onResult(jtdsResultSet)
+                    })
+        }
 
         return result
     }
