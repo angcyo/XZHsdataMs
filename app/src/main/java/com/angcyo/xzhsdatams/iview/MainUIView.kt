@@ -1,5 +1,7 @@
 package com.angcyo.xzhsdatams.iview
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.TextUtils
@@ -11,6 +13,7 @@ import com.angcyo.library.okhttp.Ok
 import com.angcyo.library.utils.L
 import com.angcyo.uiview.container.ContentLayout
 import com.angcyo.uiview.dialog.UIFileSelectorDialog
+import com.angcyo.uiview.model.TitleBarPattern
 import com.angcyo.uiview.net.RException
 import com.angcyo.uiview.net.RFunc
 import com.angcyo.uiview.net.RSubscriber
@@ -39,6 +42,18 @@ import java.util.*
  * Version: 1.0.0
  */
 class MainUIView : BaseContentUIView() {
+
+
+    override fun getTitleBar(): TitleBarPattern {
+        return super.getTitleBar().addRightItem(TitleBarPattern.TitleBarItem("切换方向") {
+            if (screenOrientation == ORIENTATION_PORTRAIT) {
+                mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+            } else {
+                mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+            }
+        })
+    }
+
     override fun inflateContentLayout(baseContentLayout: ContentLayout?, inflater: LayoutInflater?) {
         inflate(R.layout.activity_main)
     }
