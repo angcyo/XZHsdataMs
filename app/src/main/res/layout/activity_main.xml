@@ -170,12 +170,12 @@
                 <EditText
                     android:id="@+id/bianchang"
                     style="@style/TextStyle"
-                    android:hint="边长(选填)"/>
+                    android:hint="边长(必填)"/>
 
                 <EditText
                     android:id="@+id/Lshou"
                     style="@style/TextStyle"
-                    android:hint="厘数(选填)"/>
+                    android:hint="厘数(必填)"/>
 
                 <com.angcyo.uiview.widget.Button
                     android:id="@+id/search_button"
@@ -242,10 +242,10 @@
                     android:layout_height="wrap_content"
                     android:gravity="top"
                     android:hint="备注"
-                    android:singleLine="false"
-                    android:maxLines="10"
                     android:inputType="text"
-                    android:minHeight="80dp"/>
+                    android:maxLines="10"
+                    android:minHeight="80dp"
+                    android:singleLine="false"/>
 
                 <com.angcyo.uiview.widget.RTextView
                     android:id="@+id/tip_view"
@@ -254,6 +254,21 @@
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
+
+            <com.angcyo.uiview.widget.Button
+                android:id="@+id/selector_image"
+                style="@style/TextStyle"
+                android:layout_width="100dp"
+                android:layout_height="@dimen/base_35dpi"
+                android:layout_marginTop="@dimen/base_xhdpi"
+                android:text="选择图片"/>
+
+            <com.angcyo.uiview.widget.GlideImageView
+                android:id="@+id/image_view"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="@dimen/base_xhdpi"
+                android:scaleType="centerCrop"/>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

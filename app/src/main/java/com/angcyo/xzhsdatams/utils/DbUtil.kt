@@ -300,7 +300,7 @@ object DbUtil {
     }
 
     fun proc_modi(id: Int, procBean: ProcBean): Boolean {
-        var result = Jtds.prepareCall_update("proc_add", 24,
+        var result = Jtds.prepareCall_update("proc_modi", 24,
                 { jtdsCallableStatement ->
                     jtdsCallableStatement.setInt("@id", id)
                     jtdsCallableStatement.setString("@ProductType", procBean.ProductType)
