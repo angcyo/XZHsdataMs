@@ -8,9 +8,11 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
+import android.widget.PopupWindow
 import android.widget.TextView
 import com.angcyo.library.okhttp.Ok
 import com.angcyo.library.utils.L
+import com.angcyo.uiview.base.RPopupWindow
 import com.angcyo.uiview.container.ContentLayout
 import com.angcyo.uiview.dialog.UIFileSelectorDialog
 import com.angcyo.uiview.model.TitleBarPattern
@@ -18,13 +20,17 @@ import com.angcyo.uiview.net.RException
 import com.angcyo.uiview.net.RFunc
 import com.angcyo.uiview.net.RSubscriber
 import com.angcyo.uiview.net.Rx
+import com.angcyo.uiview.recycler.RBaseViewHolder
+import com.angcyo.uiview.recycler.adapter.RBaseAdapter
 import com.angcyo.uiview.utils.RUtils
 import com.angcyo.uiview.utils.T_
+import com.angcyo.uiview.utils.string.SingleTextWatcher
 import com.angcyo.uiview.widget.GlideImageView
 import com.angcyo.xzhsdatams.R
 import com.angcyo.xzhsdatams.bean.ProcBean
 import com.angcyo.xzhsdatams.utils.BitmapAndStringUtils
 import com.angcyo.xzproducems.utils.DbUtil
+import com.orhanobut.hawk.Hawk
 import java.io.File
 import java.lang.reflect.Field
 import java.text.SimpleDateFormat
@@ -43,6 +49,27 @@ import java.util.*
  */
 class MainUIView : BaseContentUIView() {
 
+    companion object {
+
+        fun getSearchList(word: String = ""): List<String> {
+            val history = Hawk.get<String>("history", "")
+            val list = RUtils.split(history)
+            if (word.isEmpty()) {
+                return list
+            } else {
+                return list.filter { it.startsWith(word) }
+            }
+        }
+
+        fun saveSearchHistory(text: String) {
+            val history = Hawk.get<String>("history", "")
+            if (history.contains(text)) {
+
+            } else {
+                Hawk.put("history", "$history,$text")
+            }
+        }
+    }
 
     override fun getTitleBar(): TitleBarPattern {
         return super.getTitleBar().addRightItem(TitleBarPattern.TitleBarItem("切换方向") {
@@ -71,83 +98,102 @@ class MainUIView : BaseContentUIView() {
 //        }.start()
     }
 
-    private fun enableAddButton(enable: Boolean) {
+    private fun enableSaveButton(enable: Boolean) {
         view(R.id.save_button).isEnabled = enable
-        view(R.id.cancel_button).isEnabled = enable
-        view(R.id.selector_image).isEnabled = enable
     }
 
     private fun enableDelButton(enable: Boolean) {
         view(R.id.delete_button).isEnabled = enable
+    }
+
+    private fun enableAddButton(enable: Boolean) {
+        view(R.id.add_button).isEnabled = enable
+    }
+
+    private fun enableCancelButton(enable: Boolean) {
+        view(R.id.cancel_button).isEnabled = enable
+    }
+
+    private fun enableModifyButton(enable: Boolean) {
         view(R.id.modify_button).isEnabled = enable
+    }
+
+    private fun enableSaveButtonOnly(enable: Boolean) {
+        view(R.id.save_button).isEnabled = enable
+    }
+
+    private fun enableSelectorImageButton(enable: Boolean) {
+        view(R.id.selector_image).isEnabled = enable
+    }
+
+    private fun enableSearchButton(enable: Boolean) {
+        view(R.id.search_button).isEnabled = enable
+    }
+
+    private fun defaultButtonStyle() {
+        selectorId = -1
+        enableAddButton(true)
+        enableSearchButton(true)
+        enableSaveButton(false)
+        enableModifyButton(false)
+        enableDelButton(false)
+        enableCancelButton(false)
+        enableSelectorImageButton(false)
+        enableAllEditText(false)
+    }
+
+    private fun addButtonStyle() {
+        selectorId = -1
+        enableAddButton(false)
+        enableSearchButton(false)
+        enableSaveButton(true)
+        enableModifyButton(false)
+        enableDelButton(false)
+        enableCancelButton(true)
+        enableSelectorImageButton(true)
+        enableAllEditText(true)
+    }
+
+    private fun modifyButtonStyle() {
+        enableAddButton(false)
+        enableSearchButton(false)
+        enableSaveButton(true)
+        enableModifyButton(false)
+        enableDelButton(true)
+        enableCancelButton(true)
+        enableSelectorImageButton(true)
+        enableAllEditText(true)
     }
 
     override fun initOnShowContentLayout() {
         super.initOnShowContentLayout()
 
-        enableAddButton(false)
-        enableDelButton(false)
+        defaultButtonStyle()
 
         //搜索
         click(R.id.search_button) {
             selectorId = -1
             onSearch()
+            enableSelectorImageButton(false)
         }
 
         //添加
         click(R.id.add_button) {
             selectorId = -1
-            enableAddButton(true)
-            enableDelButton(false)
+            addButtonStyle()
         }
 
         //清空界面数据
         click(R.id.cancel_button) {
-            selectorId = -1
+            defaultButtonStyle()
             onCancelView()
-            enableAddButton(false)
-            enableDelButton(false)
             clearSelectorFile()
             clearImageView()
         }
 
         //修改
         click(R.id.modify_button) {
-            if (selectorId <= 0) {
-                T_.show("请先执行查询")
-                showTip("请先执行查询.")
-            } else {
-                val procBean = getViewData()
-                if (procBean == null) {
-                    T_.error("请检查输入是否为空.")
-                } else {
-                    L.i("修改id:$selectorId")
-                    Rx.base(
-                            object : RFunc<Boolean>() {
-                                override fun onFuncCall(): Boolean {
-                                    return DbUtil.proc_modi(selectorId, procBean)
-                                }
-                            },
-                            object : RSubscriber<Boolean>() {
-                                override fun onSucceed(bean: Boolean) {
-                                    super.onSucceed(bean)
-                                    if (bean) {
-                                        showTip("修改${selectorId}成功.")
-                                    } else {
-                                        showTip("修改${selectorId}失败.")
-                                    }
-                                }
-
-                                override fun onEnd(isError: Boolean, isNoNetwork: Boolean, e: RException?) {
-                                    super.onEnd(isError, isNoNetwork, e)
-                                    if (isError) {
-                                        showTip("修改${selectorId}失败:${e!!.msg}")
-                                    }
-                                }
-                            }
-                    )
-                }
-            }
+            modifyButtonStyle()
         }
 
         //删除
@@ -187,36 +233,59 @@ class MainUIView : BaseContentUIView() {
 
         //保存
         click(R.id.save_button) {
-            selectorId = -1
             val procBean = getViewData()
             if (procBean == null) {
                 T_.error("请检查输入是否为空.")
             } else {
-                L.i("添加:$procBean")
-                Rx.base(
-                        object : RFunc<Boolean>() {
-                            override fun onFuncCall(): Boolean {
-                                return DbUtil.proc_add(procBean)
-                            }
-                        },
-                        object : RSubscriber<Boolean>() {
-                            override fun onSucceed(bean: Boolean) {
-                                super.onSucceed(bean)
-                                if (bean) {
-                                    showTip("添加成功.")
-                                } else {
-                                    showTip("添加失败.")
-                                }
-                            }
-
-                            override fun onEnd(isError: Boolean, isNoNetwork: Boolean, e: RException?) {
-                                super.onEnd(isError, isNoNetwork, e)
-                                if (isError) {
-                                    showTip("添加失败.${e!!.msg}")
-                                }
+                if (selectorId == -1) {
+                    L.i("添加:$procBean")
+                    Rx.base(object : RFunc<Boolean>() {
+                        override fun onFuncCall(): Boolean {
+                            return DbUtil.proc_add(procBean)
+                        }
+                    }, object : RSubscriber<Boolean>() {
+                        override fun onSucceed(bean: Boolean) {
+                            super.onSucceed(bean)
+                            if (bean) {
+                                showTip("添加成功.")
+                            } else {
+                                showTip("添加失败.")
                             }
                         }
-                )
+
+                        override fun onEnd(isError: Boolean, isNoNetwork: Boolean, e: RException?) {
+                            super.onEnd(isError, isNoNetwork, e)
+                            if (isError) {
+                                showTip("添加失败.${e!!.msg}")
+                            }
+                        }
+                    }
+                    )
+                } else {
+                    L.i("修改:$selectorId")
+                    Rx.base(object : RFunc<Boolean>() {
+                        override fun onFuncCall(): Boolean {
+                            return DbUtil.proc_modi(selectorId, procBean)
+                        }
+                    }, object : RSubscriber<Boolean>() {
+                        override fun onSucceed(bean: Boolean) {
+                            super.onSucceed(bean)
+                            if (bean) {
+                                showTip("修改${selectorId}成功.")
+                            } else {
+                                showTip("修改${selectorId}失败.")
+                            }
+                        }
+
+                        override fun onEnd(isError: Boolean, isNoNetwork: Boolean, e: RException?) {
+                            super.onEnd(isError, isNoNetwork, e)
+                            if (isError) {
+                                showTip("修改${selectorId}失败:${e!!.msg}")
+                            }
+                        }
+                    }
+                    )
+                }
             }
         }
 
@@ -244,6 +313,23 @@ class MainUIView : BaseContentUIView() {
                 })
             })
         }
+
+        //输入历史
+        val ProductTypeEditText: EditText = v(R.id.ProductType)
+        ProductTypeEditText.setOnFocusChangeListener { view, b ->
+            if (b) {
+                showPopListWindow(ProductTypeEditText, ProductTypeEditText.text.toString())
+            }
+        }
+        ProductTypeEditText.addTextChangedListener(object : SingleTextWatcher() {
+
+            override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
+                if (p0.isEmpty() || !ProductTypeEditText.isFocused) {
+                    return
+                }
+                showPopListWindow(ProductTypeEditText, p0.toString())
+            }
+        })
     }
 
     private var selectorFile: File? = null
@@ -303,18 +389,16 @@ class MainUIView : BaseContentUIView() {
                         super.onSucceed(bean)
                         if (bean.isEmpty()) {
                             showTip("没有查询到结果.")
-                            enableDelButton(false)
                             view(R.id.selector_image).isEnabled = false
                         } else {
                             showTip("查询到结果 ${bean.size} 条.")
+                            saveSearchHistory(ProductType.text.toString())//保存搜索历史
+
                             mViewHolder.fillView(bean[0])
                             selectorId = bean[0].Id
-                            enableDelButton(true)
-
-                            post {
-                                view(R.id.selector_image).isEnabled = true
-                                view(R.id.cancel_button).isEnabled = true
-                            }
+                            enableModifyButton(true)
+                            enableAddButton(false)
+                            enableCancelButton(true)
 
                             imageView?.let {
                                 it.reset()
@@ -325,9 +409,7 @@ class MainUIView : BaseContentUIView() {
 
                     override fun onEnd(isError: Boolean, isNoNetwork: Boolean, e: RException?) {
                         super.onEnd(isError, isNoNetwork, e)
-                        enableAddButton(false)
                         if (isError) {
-                            enableDelButton(false)
                             view(R.id.selector_image).isEnabled = false
 
                             selectorId = -1
@@ -340,6 +422,7 @@ class MainUIView : BaseContentUIView() {
 
     private fun onCancelView() {
         fillView(ProcBean::class.java, ProcBean())
+        mViewHolder.tv(R.id.Memob).text = ""
     }
 
     private fun fillView(clz: Class<*>?, bean: Any?) {
@@ -390,7 +473,8 @@ class MainUIView : BaseContentUIView() {
                 }
                 if (view is EditText) {
                     if (TextUtils.isEmpty(view.text) && f.name != "Memob") {
-                        return null
+                        f.setInt(procBean, 0)
+                        //return null
                     } else {
                         if (f.name == "Memob" ||
                                 f.name == "bianchang" ||
@@ -424,4 +508,70 @@ class MainUIView : BaseContentUIView() {
         }
     }
 
+    private fun enableAllEditText(enable: Boolean) {
+        val procBean = ProcBean()
+        for (f in procBean.javaClass.declaredFields) {
+            try {
+                var view: View? = mViewHolder.viewByName(f.name)
+                if (view == null) {
+                    view = mViewHolder.viewByName(f.name + "_view")
+                }
+                if (view is EditText && view.tag == null) {
+                    view.isEnabled = enable
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    var filterAdapter: RBaseAdapter<String>? = null
+    var window: PopupWindow? = null
+    private fun showPopListWindow(anchor: View, word: String) {
+        val searchList = getSearchList(word)
+
+        if (searchList.isEmpty()) {
+            if (window == null) {
+                return
+            } else {
+                window?.dismiss()
+            }
+        }
+
+        if (filterAdapter != null) {
+            filterAdapter?.resetData(searchList)
+            return
+        }
+
+        RPopupWindow.build(mActivity)
+                .layout(R.layout.layout_pop_list, object : RPopupWindow.OnInitLayout {
+                    override fun onInitLayout(viewHolder: RBaseViewHolder, window: PopupWindow?) {
+                        this@MainUIView.window = window
+                        filterAdapter = object : RBaseAdapter<String>(mActivity, searchList) {
+                            override fun getItemLayoutId(viewType: Int): Int {
+                                return R.layout.item_single_text
+                            }
+
+                            override fun onBindView(holder: RBaseViewHolder, position: Int, bean: String?) {
+                                holder.tv(R.id.text_view).text = bean
+
+                                holder.clickItem {
+                                    val editText: EditText = v(R.id.ProductType)
+                                    editText.setText(bean)
+                                    editText.setSelection(bean!!.length)
+                                    window?.dismiss()
+                                }
+                            }
+                        }
+
+                        viewHolder.reV(R.id.recycler_view).adapter = filterAdapter
+                    }
+
+                    override fun onDismiss() {
+                        filterAdapter = null
+                        window = null
+                    }
+                })
+                .showAsDropDown(anchor)
+    }
 }

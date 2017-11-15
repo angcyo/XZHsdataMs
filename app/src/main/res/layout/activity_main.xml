@@ -165,17 +165,20 @@
                 <EditText
                     android:id="@+id/ProductType"
                     style="@style/TextStyle"
-                    android:hint="型号(必填)"/>
+                    android:hint="型号(必填)"
+                    android:tag="nonull"/>
 
                 <EditText
                     android:id="@+id/bianchang"
                     style="@style/TextStyle"
-                    android:hint="边长(必填)"/>
+                    android:hint="边长(必填)"
+                    android:tag="nonull"/>
 
                 <EditText
                     android:id="@+id/Lshou"
                     style="@style/TextStyle"
-                    android:hint="厘数(必填)"/>
+                    android:hint="厘数(必填)"
+                    android:tag="nonull"/>
 
                 <com.angcyo.uiview.widget.Button
                     android:id="@+id/search_button"
