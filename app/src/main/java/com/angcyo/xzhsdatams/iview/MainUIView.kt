@@ -63,16 +63,55 @@ class MainUIView : BaseContentUIView() {
 
         fun saveSearchHistory(text: String) {
             val history = Hawk.get<String>("history", "")
-            if (history.contains(text)) {
+            if (history.contains(text) || text.isEmpty()) {
 
             } else {
                 Hawk.put("history", "$history,$text")
             }
         }
+
+        fun getSearchList1(word: String = ""): List<String> {
+            val history = Hawk.get<String>("history1", "")
+            val list = RUtils.split(history)
+            if (word.isEmpty()) {
+                return list
+            } else {
+                return list.filter { it.startsWith(word) }
+            }
+        }
+
+        fun saveSearchHistory1(text: String) {
+            val history = Hawk.get<String>("history1", "")
+            if (history.contains(text) || text.isEmpty()) {
+
+            } else {
+                Hawk.put("history1", "$history,$text")
+            }
+        }
+
+
+        fun getSearchList2(word: String = ""): List<String> {
+            val history = Hawk.get<String>("history2", "")
+            val list = RUtils.split(history)
+            if (word.isEmpty()) {
+                return list
+            } else {
+                return list.filter { it.startsWith(word) }
+            }
+        }
+
+        fun saveSearchHistory2(text: String) {
+            val history = Hawk.get<String>("history2", "")
+            if (history.contains(text) || text.isEmpty()) {
+
+            } else {
+                Hawk.put("history2", "$history,$text")
+            }
+        }
     }
 
     override fun getTitleBar(): TitleBarPattern {
-        return super.getTitleBar().addRightItem(TitleBarPattern.TitleBarItem("切换方向") {
+        return super.getTitleBar().setTitleStringLength(30).addRightItem(TitleBarPattern.TitleBarItem("切换方向") {
             if (screenOrientation == ORIENTATION_PORTRAIT) {
                 mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
             } else {
@@ -186,7 +225,7 @@ class MainUIView : BaseContentUIView() {
         //清空界面数据
         click(R.id.cancel_button) {
             defaultButtonStyle()
-            onCancelView()
+            //onCancelView()
             clearSelectorFile()
             clearImageView()
         }
@@ -330,6 +369,41 @@ class MainUIView : BaseContentUIView() {
                 showPopListWindow(ProductTypeEditText, p0.toString())
             }
         })
+
+        //边长
+        val bianchang: EditText = v(R.id.bianchang)
+        bianchang.setOnFocusChangeListener { view, b ->
+            if (b) {
+                showPopListWindow1(bianchang, bianchang.text.toString())
+            }
+        }
+        bianchang.addTextChangedListener(object : SingleTextWatcher() {
+
+            override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
+                if (p0.isEmpty() || !bianchang.isFocused) {
+                    return
+                }
+                showPopListWindow1(bianchang, p0.toString())
+            }
+        })
+
+
+        //厘数
+        val Lshou: EditText = v(R.id.Lshou)
+        Lshou.setOnFocusChangeListener { view, b ->
+            if (b) {
+                showPopListWindow2(Lshou, Lshou.text.toString())
+            }
+        }
+        Lshou.addTextChangedListener(object : SingleTextWatcher() {
+
+            override fun onTextChanged(p0: CharSequence, p1: Int, p2: Int, p3: Int) {
+                if (p0.isEmpty() || !Lshou.isFocused) {
+                    return
+                }
+                showPopListWindow2(Lshou, p0.toString())
+            }
+        })
     }
 
     private var selectorFile: File? = null
@@ -354,6 +428,14 @@ class MainUIView : BaseContentUIView() {
         imageView?.reset()
     }
 
+    fun String.toInt1(): Int {
+        return if (this.isEmpty()) {
+            -1
+        } else {
+            this.toInt()
+        }
+    }
+
     //搜索按钮事件
     private fun onSearch() {
         val ProductType: TextView = v(R.id.ProductType)
@@ -365,23 +447,23 @@ class MainUIView : BaseContentUIView() {
             return
         }
 
-        /*if (Lshou.text.isEmpty() && bianchang.text.isEmpty()) {
-        } else*/ if (Lshou.text.isEmpty() || bianchang.text.isEmpty()) {
-            T_.error("请输入边长或厘数")
-            return
-        }
+//        if (Lshou.text.isEmpty() && bianchang.text.isEmpty()) {
+//        } else if (Lshou.text.isEmpty() || bianchang.text.isEmpty()) {
+//            T_.error("请输入边长或厘数")
+//            return
+//        }
 
         Rx.base(
                 object : RFunc<MutableList<ProcBean>>() {
                     override fun onFuncCall(): MutableList<ProcBean> {
-                        return if (Lshou.text.isEmpty() || bianchang.text.isEmpty()) {
-                            DbUtil.proc_search(ProductType.text.toString().toInt())
-                        } else {
-                            DbUtil.proc_search(ProductType.text.toString().toInt(),
-                                    Lshou.text.toString().toInt(),
-                                    bianchang.text.toString().toInt()
-                            )
-                        }
+                        /*return if (Lshou.text.isEmpty() || bianchang.text.isEmpty()) {
+                           DbUtil.proc_search(ProductType.text.toString().toInt())
+                       } else {*/
+                        return DbUtil.proc_search(ProductType.text.toString().toInt(),
+                                Lshou.text.toString().toInt1(),
+                                bianchang.text.toString().toInt1()
+                        )
+                        /*}*/
                     }
                 },
                 object : RSubscriber<MutableList<ProcBean>>() {
@@ -393,12 +475,15 @@ class MainUIView : BaseContentUIView() {
                         } else {
                             showTip("查询到结果 ${bean.size} 条.")
                             saveSearchHistory(ProductType.text.toString())//保存搜索历史
+                            saveSearchHistory1(bianchang.text.toString())//
+                            saveSearchHistory2(Lshou.text.toString())//
 
                             mViewHolder.fillView(bean[0])
                             selectorId = bean[0].Id
                             enableModifyButton(true)
-                            enableAddButton(false)
-                            enableCancelButton(true)
+                            enableAddButton(true)
+                            enableCancelButton(false)
+                            enableDelButton(true)
 
                             imageView?.let {
                                 it.reset()
@@ -557,6 +642,102 @@ class MainUIView : BaseContentUIView() {
 
                                 holder.clickItem {
                                     val editText: EditText = v(R.id.ProductType)
+                                    editText.setText(bean)
+                                    editText.setSelection(bean!!.length)
+                                    window?.dismiss()
+                                }
+                            }
+                        }
+
+                        viewHolder.reV(R.id.recycler_view).adapter = filterAdapter
+                    }
+
+                    override fun onDismiss() {
+                        filterAdapter = null
+                        window = null
+                    }
+                })
+                .showAsDropDown(anchor)
+    }
+
+    private fun showPopListWindow1(anchor: View, word: String) {
+        val searchList = getSearchList1(word)
+
+        if (searchList.isEmpty()) {
+            if (window == null) {
+                return
+            } else {
+                window?.dismiss()
+            }
+        }
+
+        if (filterAdapter != null) {
+            filterAdapter?.resetData(searchList)
+            return
+        }
+
+        RPopupWindow.build(mActivity)
+                .layout(R.layout.layout_pop_list, object : RPopupWindow.OnInitLayout {
+                    override fun onInitLayout(viewHolder: RBaseViewHolder, window: PopupWindow?) {
+                        this@MainUIView.window = window
+                        filterAdapter = object : RBaseAdapter<String>(mActivity, searchList) {
+                            override fun getItemLayoutId(viewType: Int): Int {
+                                return R.layout.item_single_text
+                            }
+
+                            override fun onBindView(holder: RBaseViewHolder, position: Int, bean: String?) {
+                                holder.tv(R.id.text_view).text = bean
+
+                                holder.clickItem {
+                                    val editText: EditText = v(R.id.bianchang)
+                                    editText.setText(bean)
+                                    editText.setSelection(bean!!.length)
+                                    window?.dismiss()
+                                }
+                            }
+                        }
+
+                        viewHolder.reV(R.id.recycler_view).adapter = filterAdapter
+                    }
+
+                    override fun onDismiss() {
+                        filterAdapter = null
+                        window = null
+                    }
+                })
+                .showAsDropDown(anchor)
+    }
+
+    private fun showPopListWindow2(anchor: View, word: String) {
+        val searchList = getSearchList2(word)
+
+        if (searchList.isEmpty()) {
+            if (window == null) {
+                return
+            } else {
+                window?.dismiss()
+            }
+        }
+
+        if (filterAdapter != null) {
+            filterAdapter?.resetData(searchList)
+            return
+        }
+
+        RPopupWindow.build(mActivity)
+                .layout(R.layout.layout_pop_list, object : RPopupWindow.OnInitLayout {
+                    override fun onInitLayout(viewHolder: RBaseViewHolder, window: PopupWindow?) {
+                        this@MainUIView.window = window
+                        filterAdapter = object : RBaseAdapter<String>(mActivity, searchList) {
+                            override fun getItemLayoutId(viewType: Int): Int {
+                                return R.layout.item_single_text
+                            }
+
+                            override fun onBindView(holder: RBaseViewHolder, position: Int, bean: String?) {
+                                holder.tv(R.id.text_view).text = bean
+
+                                holder.clickItem {
+                                    val editText: EditText = v(R.id.Lshou)
                                     editText.setText(bean)
                                     editText.setSelection(bean!!.length)
                                     window?.dismiss()

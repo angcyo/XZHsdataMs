@@ -336,8 +336,9 @@ object DbUtil {
     @Bianchang AS nvarchar  --边长）
      */
 
-    fun proc_search(ProductType: Int, Lshou: Int? = null, Bianchang: Int? = null): MutableList<ProcBean> {
+    fun proc_search(ProductType: Int, Lshou: Int, Bianchang: Int): MutableList<ProcBean> {
         var result: MutableList<ProcBean> = mutableListOf()
+        L.e("call: proc_search -> $ProductType $Lshou $Bianchang")
 
         fun onResult(jtdsResultSet: JtdsResultSet) {
             //L.e("查询结果1:" + jtdsResultSet.getInt(0))

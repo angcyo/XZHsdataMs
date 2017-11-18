@@ -18,6 +18,44 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/base_xhdpi">
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:layout_width="100dp"
+                    android:layout_weight="0"
+                    android:text=""/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:hint="温度1"/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:hint="温度2"/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:hint="温度3"/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:hint="温度4"/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:hint="温度5"/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:hint="转速"/>
+
+            </LinearLayout>
+
             <!--主机温度-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,33 +70,27 @@
 
                 <EditText
                     android:id="@+id/MainTemp1"
-                    style="@style/TextStyle"
-                    android:hint="主机温度1"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/MainTemp2"
-                    style="@style/TextStyle"
-                    android:hint="主机温度2"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/MainTemp3"
-                    style="@style/TextStyle"
-                    android:hint="主机温度3"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/MainTemp4"
-                    style="@style/TextStyle"
-                    android:hint="主机温度4"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/MainTemp5"
-                    style="@style/TextStyle"
-                    android:hint="主机温度5"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/Mainspeed"
-                    style="@style/TextStyle"
-                    android:hint="主机转速"/>
+                    style="@style/TextStyle"/>
 
             </LinearLayout>
 
@@ -76,33 +108,27 @@
 
                 <EditText
                     android:id="@+id/SUPPTemp11"
-                    style="@style/TextStyle"
-                    android:hint="辅机1温度1"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp12"
-                    style="@style/TextStyle"
-                    android:hint="辅机1温度2"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp13"
-                    style="@style/TextStyle"
-                    android:hint="辅机1温度3"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp14"
-                    style="@style/TextStyle"
-                    android:hint="辅机1温度4"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp15"
-                    style="@style/TextStyle"
-                    android:hint="辅机1温度5"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPspeed1"
-                    style="@style/TextStyle"
-                    android:hint="辅机1速度"/>
+                    style="@style/TextStyle"/>
 
             </LinearLayout>
 
@@ -120,33 +146,63 @@
 
                 <EditText
                     android:id="@+id/SUPPTemp21"
-                    style="@style/TextStyle"
-                    android:hint="辅机2温度1"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp22"
-                    style="@style/TextStyle"
-                    android:hint="辅机2温度2"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp23"
-                    style="@style/TextStyle"
-                    android:hint="辅机2温度3"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp24"
-                    style="@style/TextStyle"
-                    android:hint="辅机2温度4"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp25"
-                    style="@style/TextStyle"
-                    android:hint="辅机2温度5"/>
+                    style="@style/TextStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPspeed2"
+                    style="@style/TextStyle"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/base_xhdpi">
+
+                <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
-                    android:hint="辅机2速度"/>
+                    android:layout_width="100dp"
+                    android:layout_weight="0"
+                    android:text=""/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:hint="型号(必填)"
+                    android:tag="nonull"/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:hint="边长(选填)"
+                    android:tag="nonull"/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:hint="厘数(选填)"
+                    android:tag="nonull"/>
+
+                <com.angcyo.uiview.widget.RTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/base_xhdpi"
+                    android:paddingEnd="@dimen/base_xhdpi"
+                    android:paddingStart="@dimen/base_xhdpi"
+                    android:text=""/>
 
             </LinearLayout>
 
@@ -165,19 +221,16 @@
                 <EditText
                     android:id="@+id/ProductType"
                     style="@style/TextStyle"
-                    android:hint="型号(必填)"
                     android:tag="nonull"/>
 
                 <EditText
                     android:id="@+id/bianchang"
                     style="@style/TextStyle"
-                    android:hint="边长(必填)"
                     android:tag="nonull"/>
 
                 <EditText
                     android:id="@+id/Lshou"
                     style="@style/TextStyle"
-                    android:hint="厘数(必填)"
                     android:tag="nonull"/>
 
                 <com.angcyo.uiview.widget.Button
@@ -187,7 +240,6 @@
                     android:paddingEnd="@dimen/base_xhdpi"
                     android:paddingStart="@dimen/base_xhdpi"
                     android:text="查询"/>
-
 
             </LinearLayout>
 
