@@ -183,6 +183,7 @@
                     android:text=""/>
 
                 <com.angcyo.uiview.widget.RTextView
+                    android:id="@+id/focus_tip_view"
                     style="@style/TextStyle"
                     android:hint="型号(必填)"
                     android:tag="nonull"/>

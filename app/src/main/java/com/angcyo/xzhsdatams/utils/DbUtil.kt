@@ -336,7 +336,7 @@ object DbUtil {
     @Bianchang AS nvarchar  --边长）
      */
 
-    fun proc_search(ProductType: Int, Lshou: Int, Bianchang: Int): MutableList<ProcBean> {
+    fun proc_search(ProductType: String = "", Lshou: String = "", Bianchang: String = ""): MutableList<ProcBean> {
         var result: MutableList<ProcBean> = mutableListOf()
         L.e("call: proc_search -> $ProductType $Lshou $Bianchang")
 
@@ -381,7 +381,7 @@ object DbUtil {
         if (Lshou == null || Bianchang == null) {
             Jtds.prepareCall_set("proc_search", 1,
                     { jtdsCallableStatement ->
-                        jtdsCallableStatement.setInt("ProductType", ProductType)
+                        jtdsCallableStatement.setString("ProductType", ProductType)
                     },
                     { jtdsResultSet ->
                         onResult(jtdsResultSet)
@@ -389,9 +389,9 @@ object DbUtil {
         } else {
             Jtds.prepareCall_set("proc_search", 3,
                     { jtdsCallableStatement ->
-                        jtdsCallableStatement.setInt("ProductType", ProductType)
-                        jtdsCallableStatement.setInt("Lshou", Lshou)
-                        jtdsCallableStatement.setInt("Bianchang", Bianchang)
+                        jtdsCallableStatement.setString("ProductType", ProductType)
+                        jtdsCallableStatement.setString("Lshou", Lshou)
+                        jtdsCallableStatement.setString("Bianchang", Bianchang)
                     },
                     { jtdsResultSet ->
                         onResult(jtdsResultSet)
@@ -408,11 +408,27 @@ object DbUtil {
     )
      * */
 
-    fun proc_del(id: Int, Password: Int): Boolean {
+    fun proc_del(id: Int, Password: String = ""): Boolean {
         var result = Jtds.prepareCall_update("proc_del", 2,
                 { jtdsCallableStatement ->
                     jtdsCallableStatement.setInt("@id", id)
-                    jtdsCallableStatement.setInt("@Password", Password)
+                    jtdsCallableStatement.setString("@Password", Password)
+                })
+        return result
+    }
+
+    /**
+     * 修改密码
+     * proc_modipass（参数：
+    @oldpassword AS nvarchar ,  --旧密码
+    @newpassword AS nvarchar   --新密码
+    )
+     */
+    fun proc_modipass(oldpassword: String = "", newpassword: String = ""): Boolean {
+        var result = Jtds.prepareCall_update("proc_modipass", 2,
+                { jtdsCallableStatement ->
+                    jtdsCallableStatement.setString("@oldpassword", oldpassword)
+                    jtdsCallableStatement.setString("@newpassword", newpassword)
                 })
         return result
     }

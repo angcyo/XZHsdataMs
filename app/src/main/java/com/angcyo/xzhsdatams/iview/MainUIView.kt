@@ -4,6 +4,7 @@ import android.content.pm.ActivityInfo
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.support.design.widget.TextInputLayout
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.angcyo.library.utils.L
 import com.angcyo.uiview.base.RPopupWindow
 import com.angcyo.uiview.container.ContentLayout
 import com.angcyo.uiview.dialog.UIFileSelectorDialog
+import com.angcyo.uiview.dialog.UIInputDialog
 import com.angcyo.uiview.model.TitleBarPattern
 import com.angcyo.uiview.net.RException
 import com.angcyo.uiview.net.RFunc
@@ -25,7 +27,10 @@ import com.angcyo.uiview.recycler.adapter.RBaseAdapter
 import com.angcyo.uiview.utils.RUtils
 import com.angcyo.uiview.utils.T_
 import com.angcyo.uiview.utils.string.SingleTextWatcher
+import com.angcyo.uiview.widget.Button
+import com.angcyo.uiview.widget.ExEditText
 import com.angcyo.uiview.widget.GlideImageView
+import com.angcyo.uiview.widget.TitleBarLayout
 import com.angcyo.xzhsdatams.R
 import com.angcyo.xzhsdatams.bean.ProcBean
 import com.angcyo.xzhsdatams.utils.BitmapAndStringUtils
@@ -111,13 +116,44 @@ class MainUIView : BaseContentUIView() {
     }
 
     override fun getTitleBar(): TitleBarPattern {
-        return super.getTitleBar().setTitleStringLength(30).addRightItem(TitleBarPattern.TitleBarItem("切换方向") {
-            if (screenOrientation == ORIENTATION_PORTRAIT) {
-                mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-            } else {
-                mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-            }
-        })
+        return super.getTitleBar().setTitleStringLength(30)
+                .addRightItem(TitleBarPattern.TitleBarItem("修改密码") {
+                    startIView(object : ModifyPasswordDialog() {
+                        override fun onModifyPassword(old: String, new: String) {
+                            super.onModifyPassword(old, new)
+                            Rx.base(
+                                    object : RFunc<Boolean>() {
+                                        override fun onFuncCall(): Boolean =
+                                                DbUtil.proc_modipass(old, new)
+                                    },
+                                    object : RSubscriber<Boolean>() {
+                                        override fun onSucceed(bean: Boolean) {
+                                            super.onSucceed(bean)
+                                            if (bean) {
+                                                showTip("修改密码成功.")
+                                            } else {
+                                                showTip("修改密码失败.")
+                                            }
+                                        }
+
+                                        override fun onEnd(isError: Boolean, isNoNetwork: Boolean, e: RException?) {
+                                            super.onEnd(isError, isNoNetwork, e)
+                                            if (isError) {
+                                                showTip("修改密码失败:${e!!.msg}")
+                                            }
+                                        }
+                                    }
+                            )
+                        }
+                    })
+                })
+                .addRightItem(TitleBarPattern.TitleBarItem("切换方向") {
+                    if (screenOrientation == ORIENTATION_PORTRAIT) {
+                        mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
+                    } else {
+                        mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
+                    }
+                })
     }
 
     override fun inflateContentLayout(baseContentLayout: ContentLayout?, inflater: LayoutInflater?) {
@@ -212,7 +248,7 @@ class MainUIView : BaseContentUIView() {
         //搜索
         click(R.id.search_button) {
             selectorId = -1
-            onSearch()
+            onSearch(mViewHolder.v(R.id.focus_tip_view))
             enableSelectorImageButton(false)
         }
 
@@ -220,12 +256,15 @@ class MainUIView : BaseContentUIView() {
         click(R.id.add_button) {
             selectorId = -1
             addButtonStyle()
+            onCancelView()
+            clearSelectorFile()
+            clearImageView()
         }
 
         //清空界面数据
         click(R.id.cancel_button) {
             defaultButtonStyle()
-            //onCancelView()
+            onCancelView()
             clearSelectorFile()
             clearImageView()
         }
@@ -241,32 +280,50 @@ class MainUIView : BaseContentUIView() {
                 T_.show("请先执行查询")
                 showTip("请先执行查询.")
             } else {
-                T_.error("你还没有权限删除.")
+                //T_.error("你还没有权限删除.")
+                startIView(UIInputDialog().apply {
+                    dialogConfig = object : UIInputDialog.UIInputDialogConfig() {
+                        override fun onInitInputDialog(inputDialog: UIInputDialog, titleBarLayout: TitleBarLayout, textInputLayout: TextInputLayout, editText: ExEditText, okButton: Button) {
+                            super.onInitInputDialog(inputDialog, titleBarLayout, textInputLayout, editText, okButton)
+                            editText.hint = "请输入密码:"
+                            editText.maxLines = 1
+                            editText.setIsText(true)
+                            editText.setSingleLine(true)
 
-//                Rx.base(
-//                        object : RFunc<Boolean>() {
-//                            override fun onFuncCall(): Boolean {
-//                                return DbUtil.proc_del(selectorId, 123456)
-//                            }
-//                        },
-//                        object : RSubscriber<Boolean>() {
-//                            override fun onSucceed(bean: Boolean) {
-//                                super.onSucceed(bean)
-//                                if (bean) {
-//                                    showTip("删除${selectorId}成功.")
-//                                } else {
-//                                    showTip("删除${selectorId}失败.")
-//                                }
-//                            }
-//
-//                            override fun onEnd(isError: Boolean, isNoNetwork: Boolean, e: RException?) {
-//                                super.onEnd(isError, isNoNetwork, e)
-//                                if (isError) {
-//                                    showTip("删除${selectorId}失败:${e!!.msg}")
-//                                }
-//                            }
-//                        }
-//                )
+                            click(okButton) {
+                                inputDialog.finishDialog {
+                                    if (editText.isEmpty) {
+                                    } else {
+                                        Rx.base(
+                                                object : RFunc<Boolean>() {
+                                                    override fun onFuncCall(): Boolean =
+                                                            DbUtil.proc_del(selectorId, editText.string())
+                                                },
+                                                object : RSubscriber<Boolean>() {
+                                                    override fun onSucceed(bean: Boolean) {
+                                                        super.onSucceed(bean)
+                                                        if (bean) {
+                                                            showTip("删除${selectorId}成功.")
+                                                        } else {
+                                                            showTip("删除${selectorId}失败.")
+                                                        }
+                                                    }
+
+                                                    override fun onEnd(isError: Boolean, isNoNetwork: Boolean, e: RException?) {
+                                                        super.onEnd(isError, isNoNetwork, e)
+                                                        if (isError) {
+                                                            showTip("删除${selectorId}失败:${e!!.msg}")
+                                                        }
+                                                    }
+                                                }
+                                        )
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                })
             }
         }
 
@@ -437,7 +494,7 @@ class MainUIView : BaseContentUIView() {
     }
 
     //搜索按钮事件
-    private fun onSearch() {
+    private fun onSearch(searchView: View) {
         val ProductType: TextView = v(R.id.ProductType)
         val Lshou: TextView = v(R.id.Lshou)
         val bianchang: TextView = v(R.id.bianchang)
@@ -453,16 +510,19 @@ class MainUIView : BaseContentUIView() {
 //            return
 //        }
 
+        searchView.isFocusable = true
+        searchView.isFocusableInTouchMode = true
+        searchView.requestFocus()
+
         Rx.base(
                 object : RFunc<MutableList<ProcBean>>() {
                     override fun onFuncCall(): MutableList<ProcBean> {
                         /*return if (Lshou.text.isEmpty() || bianchang.text.isEmpty()) {
                            DbUtil.proc_search(ProductType.text.toString().toInt())
                        } else {*/
-                        return DbUtil.proc_search(ProductType.text.toString().toInt(),
-                                Lshou.text.toString().toInt1(),
-                                bianchang.text.toString().toInt1()
-                        )
+                        return DbUtil.proc_search(ProductType.text.toString(),
+                                Lshou.text.toString(),
+                                bianchang.text.toString())
                         /*}*/
                     }
                 },
