@@ -211,7 +211,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:visibility="gone">
 
                 <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
@@ -248,7 +249,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:visibility="gone">
 
                 <com.angcyo.uiview.widget.Button
                     android:id="@+id/add_button"
@@ -289,7 +291,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                tools:visibility="gone">
 
                 <com.angcyo.uiview.widget.ExEditText
                     android:id="@+id/Memob"
@@ -311,20 +314,82 @@
 
             </LinearLayout>
 
-            <com.angcyo.uiview.widget.Button
-                android:id="@+id/selector_image"
-                style="@style/TextStyle"
-                android:layout_width="100dp"
-                android:layout_height="@dimen/base_35dpi"
-                android:layout_marginTop="@dimen/base_xhdpi"
-                android:text="选择图片"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <com.angcyo.uiview.widget.GlideImageView
-                android:id="@+id/image_view"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="@dimen/base_xhdpi"
-                android:scaleType="centerCrop"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!--选择图片-->
+                    <com.angcyo.uiview.widget.Button
+                        android:id="@+id/selector_image"
+                        style="@style/TextStyle"
+                        android:layout_width="100dp"
+                        android:layout_height="@dimen/base_35dpi"
+                        android:layout_marginTop="@dimen/base_xhdpi"
+                        android:text="选择图片"/>
+
+                    <com.angcyo.uiview.widget.GlideImageView
+                        android:id="@+id/image_view"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="@dimen/base_xhdpi"
+                        android:scaleType="centerCrop"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="400dp"
+                    android:layout_height="200dp"
+                    android:layout_gravity="end"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/base_hdpi">
+
+                        <com.angcyo.uiview.widget.RTextView
+                            style="@style/TextStyle"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:hint="型号"
+                            android:tag="nonull"/>
+
+                        <com.angcyo.uiview.widget.RTextView
+                            style="@style/TextStyle"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:hint="边长"
+                            android:tag="nonull"/>
+
+                        <com.angcyo.uiview.widget.RTextView
+                            style="@style/TextStyle"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:hint="厘数"
+                            android:tag="nonull"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/base_line"
+                        android:background="@drawable/base_shape_line"/>
+
+                    <com.angcyo.uiview.recycler.RRecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+
+                </LinearLayout>
+
+            </FrameLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

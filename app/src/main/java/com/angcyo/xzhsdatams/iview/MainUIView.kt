@@ -3,6 +3,7 @@ package com.angcyo.xzhsdatams.iview
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.text.TextUtils
@@ -23,6 +24,7 @@ import com.angcyo.uiview.net.RFunc
 import com.angcyo.uiview.net.RSubscriber
 import com.angcyo.uiview.net.Rx
 import com.angcyo.uiview.recycler.RBaseViewHolder
+import com.angcyo.uiview.recycler.RRecyclerView
 import com.angcyo.uiview.recycler.adapter.RBaseAdapter
 import com.angcyo.uiview.utils.RUtils
 import com.angcyo.uiview.utils.T_
@@ -344,6 +346,7 @@ class MainUIView : BaseContentUIView() {
                             super.onSucceed(bean)
                             if (bean) {
                                 showTip("添加成功.")
+                                view(R.id.cancel_button).callOnClick()
                             } else {
                                 showTip("添加失败.")
                             }
@@ -368,6 +371,7 @@ class MainUIView : BaseContentUIView() {
                             super.onSucceed(bean)
                             if (bean) {
                                 showTip("修改${selectorId}成功.")
+                                view(R.id.cancel_button).callOnClick()
                             } else {
                                 showTip("修改${selectorId}失败.")
                             }
@@ -461,7 +465,30 @@ class MainUIView : BaseContentUIView() {
                 showPopListWindow2(Lshou, p0.toString())
             }
         })
+
+        //列表
+        val recyclerView: RRecyclerView = mViewHolder.v(R.id.recycler_view)
+        adapter = object : RBaseAdapter<ProcBean>(mActivity) {
+            override fun getItemLayoutId(viewType: Int): Int = R.layout.item_search_layoyt
+
+            override fun onBindView(holder: RBaseViewHolder, position: Int, bean: ProcBean) {
+                //holder.fillView(bean)
+                holder.tv(R.id.ProductType_text).text = bean.ProductType
+                holder.tv(R.id.Lshou_text).text = bean.Lshou
+                holder.tv(R.id.bianchang_text).text = bean.bianchang
+
+                //holder.itemView.setBackgroundColor(Color.RED)
+
+                holder.clickItem {
+                    mViewHolder.fillView(bean)
+                }
+            }
+        }
+
+        recyclerView.adapter = adapter
     }
+
+    private lateinit var adapter: RBaseAdapter<ProcBean>
 
     private var selectorFile: File? = null
     private var imageView: GlideImageView? = null
@@ -538,7 +565,11 @@ class MainUIView : BaseContentUIView() {
                             saveSearchHistory1(bianchang.text.toString())//
                             saveSearchHistory2(Lshou.text.toString())//
 
-                            mViewHolder.fillView(bean[0])
+                            adapter.resetData(bean)
+                            if (bean.size == 1) {
+                                mViewHolder.fillView(bean[0])
+                            }
+
                             selectorId = bean[0].Id
                             enableModifyButton(true)
                             enableAddButton(true)
@@ -617,19 +648,17 @@ class MainUIView : BaseContentUIView() {
                     view = mViewHolder.viewByName(f.name + "_view")
                 }
                 if (view is EditText) {
-                    if (TextUtils.isEmpty(view.text) && f.name != "Memob") {
+                    if (f.name == "Memob" ||
+                            f.name == "bianchang" ||
+                            f.name == "Lshou" ||
+                            f.name == "ProductType"
+                            ) {
+                        f.set(procBean, view.text.toString())
+                    } else if (TextUtils.isEmpty(view.text) && f.name != "Memob") {
                         f.setInt(procBean, 0)
                         //return null
                     } else {
-                        if (f.name == "Memob" ||
-                                f.name == "bianchang" ||
-                                f.name == "Lshou" ||
-                                f.name == "ProductType"
-                                ) {
-                            f.set(procBean, view.text.toString())
-                        } else {
-                            f.setInt(procBean, view.text.toString().toInt())
-                        }
+                        f.setInt(procBean, view.text.toString().toInt())
 //                        L.w("1->${view.text}")
 //                        f.set(procBean, view.text)
 //                        L.w("2->${f.get(procBean)}")

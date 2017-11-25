@@ -16,9 +16,9 @@ data class ProcBean(
         var Id: Int = 0, //返回时有效
         var DhNo: String? = "",//返回时有效
 
-        var ProductType: String = "0", // nvarchar=0=0, --型号
-        var Lshou: String = "0", // nvarchar =0,  --厘数
-        var bianchang: String = "0", // nvarchar =0, --边长
+        var ProductType: String = "", // nvarchar=0=0, --型号
+        var Lshou: String = "", // nvarchar =0,  --厘数
+        var bianchang: String = "", // nvarchar =0, --边长
         var MainTemp1: Int = 0, // decimal =0, --主机温度1
         var MainTemp2: Int = 0, // decimal =0,--主机温度2
         var MainTemp3: Int = 0, // decimal =0,--主机温度3

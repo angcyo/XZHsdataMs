@@ -378,10 +378,12 @@ object DbUtil {
             }
         }
 
-        if (Lshou == null || Bianchang == null) {
-            Jtds.prepareCall_set("proc_search", 1,
+        if (Lshou.isEmpty() && Bianchang.isEmpty()) {
+            Jtds.prepareCall_set("proc_search", 3,
                     { jtdsCallableStatement ->
                         jtdsCallableStatement.setString("ProductType", ProductType)
+                        jtdsCallableStatement.setString("Lshou", "")
+                        jtdsCallableStatement.setString("Bianchang", "")
                     },
                     { jtdsResultSet ->
                         onResult(jtdsResultSet)

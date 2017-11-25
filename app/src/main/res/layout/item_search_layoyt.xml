@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/base_bg_selector"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/base_hdpi"
+    android:paddingStart="@dimen/base_hdpi"
+    android:paddingTop="@dimen/base_hdpi">
+
+    <com.angcyo.uiview.widget.RTextView
+        android:id="@+id/ProductType_text"
+        style="@style/BaseMainTextStyle"
+        android:layout_width="0dp"
+        android:layout_weight="1"/>
+
+    <com.angcyo.uiview.widget.RTextView
+        android:id="@+id/bianchang_text"
+        style="@style/BaseMainTextStyle"
+        android:layout_width="0dp"
+        android:layout_weight="1"/>
+
+    <com.angcyo.uiview.widget.RTextView
+        android:id="@+id/Lshou_text"
+        style="@style/BaseMainTextStyle"
+        android:layout_width="0dp"
+        android:layout_weight="1"/>
+
+</LinearLayout>
