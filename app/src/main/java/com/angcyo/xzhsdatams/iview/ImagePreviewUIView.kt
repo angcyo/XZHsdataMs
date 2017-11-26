@@ -22,6 +22,8 @@ class ImagePreviewUIView(val bitmap: Bitmap) : BaseContentUIView() {
         inflate(R.layout.image_preview_layout)
     }
 
+    override fun getDefaultBackgroundColor(): Int = getColor(R.color.transparent_dark80)
+
     override fun initOnShowContentLayout() {
         super.initOnShowContentLayout()
         val bitmapView: PhotoView = v(R.id.photo_view)
