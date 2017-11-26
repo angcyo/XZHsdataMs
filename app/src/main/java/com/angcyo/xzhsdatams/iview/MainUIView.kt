@@ -2,8 +2,8 @@ package com.angcyo.xzhsdatams.iview
 
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.text.TextUtils
@@ -14,6 +14,7 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import com.angcyo.library.okhttp.Ok
 import com.angcyo.library.utils.L
+import com.angcyo.uiview.Root
 import com.angcyo.uiview.base.RPopupWindow
 import com.angcyo.uiview.container.ContentLayout
 import com.angcyo.uiview.dialog.UIFileSelectorDialog
@@ -390,10 +391,15 @@ class MainUIView : BaseContentUIView() {
         }
 
         imageView = v(R.id.image_view)
+        click(imageView) {
+            bitmap?.let {
+                startIView(ImagePreviewUIView(it))
+            }
+        }
 
         //选择图片
         click(R.id.selector_image) {
-            startIView(UIFileSelectorDialog {
+            startIView(UIFileSelectorDialog(Root.externalStorageDirectory()) {
                 Ok.instance().type(it.absolutePath, object : Ok.OnImageTypeListener {
                     override fun onLoadStart() {
 
@@ -407,10 +413,14 @@ class MainUIView : BaseContentUIView() {
                             imageView?.let {
                                 it.reset()
                                 it.url = selectorFile?.absolutePath
+
+                                bitmap = BitmapFactory.decodeFile(selectorFile?.absolutePath)
                             }
                         }
                     }
                 })
+            }.apply {
+                storageDirectory = "/mnt/"
             })
         }
 
@@ -481,6 +491,8 @@ class MainUIView : BaseContentUIView() {
 
                 holder.clickItem {
                     mViewHolder.fillView(bean)
+                    selectorId = bean.Id
+                    showImageView(bean.Pict01)
                 }
             }
         }
@@ -509,7 +521,8 @@ class MainUIView : BaseContentUIView() {
     }
 
     private fun clearImageView() {
-        imageView?.reset()
+        imageView?.clear()
+        bitmap = null
     }
 
     fun String.toInt1(): Int {
@@ -519,6 +532,8 @@ class MainUIView : BaseContentUIView() {
             this.toInt()
         }
     }
+
+    private var bitmap: Bitmap? = null
 
     //搜索按钮事件
     private fun onSearch(searchView: View) {
@@ -568,18 +583,15 @@ class MainUIView : BaseContentUIView() {
                             adapter.resetData(bean)
                             if (bean.size == 1) {
                                 mViewHolder.fillView(bean[0])
+                                showImageView(bean[0].Pict01)
+                                selectorId = bean[0].Id
                             }
 
-                            selectorId = bean[0].Id
                             enableModifyButton(true)
                             enableAddButton(true)
                             enableCancelButton(false)
                             enableDelButton(true)
 
-                            imageView?.let {
-                                it.reset()
-                                it.setImageBitmap(BitmapAndStringUtils.convertStringToIcon(bean[0].Pict01))
-                            }
                         }
                     }
 
@@ -594,6 +606,18 @@ class MainUIView : BaseContentUIView() {
                     }
                 }
         )
+    }
+
+    private fun showImageView(bitmapString: String?) {
+        imageView?.let {
+            it.clear()
+            if (!bitmapString.isNullOrEmpty() && bitmapString != "no_pic") {
+                bitmap = BitmapAndStringUtils.convertStringToIcon(bitmapString)
+                it.setImageBitmap(bitmap)
+            } else {
+                bitmap = null
+            }
+        }
     }
 
     private fun onCancelView() {

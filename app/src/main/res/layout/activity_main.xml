@@ -223,16 +223,19 @@
                 <EditText
                     android:id="@+id/ProductType"
                     style="@style/TextStyle"
+                    android:inputType="text"
                     android:tag="nonull"/>
 
                 <EditText
                     android:id="@+id/bianchang"
                     style="@style/TextStyle"
+                    android:inputType="text"
                     android:tag="nonull"/>
 
                 <EditText
                     android:id="@+id/Lshou"
                     style="@style/TextStyle"
+                    android:inputType="text"
                     android:tag="nonull"/>
 
                 <com.angcyo.uiview.widget.Button
