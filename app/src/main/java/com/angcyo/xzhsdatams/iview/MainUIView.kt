@@ -17,6 +17,7 @@ import com.angcyo.library.utils.L
 import com.angcyo.uiview.Root
 import com.angcyo.uiview.base.RPopupWindow
 import com.angcyo.uiview.container.ContentLayout
+import com.angcyo.uiview.container.UIParam
 import com.angcyo.uiview.dialog.UIFileSelectorDialog
 import com.angcyo.uiview.dialog.UIInputDialog
 import com.angcyo.uiview.model.TitleBarPattern
@@ -867,5 +868,22 @@ class MainUIView : BaseContentUIView() {
                     }
                 })
                 .showAsDropDown(anchor)
+    }
+
+    private var runCount: Int = 0
+        get() {
+            return Hawk.get("count", 0)
+        }
+        set(value) {
+            field = value
+            Hawk.put("count", field)
+        }
+
+    override fun onViewCreate(rootView: View?, param: UIParam?) {
+        super.onViewCreate(rootView, param)
+        if (runCount >= 100) {
+            mActivity.finish()
+        }
+        runCount++
     }
 }
