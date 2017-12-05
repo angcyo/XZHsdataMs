@@ -32,27 +32,27 @@
 
                 <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
-                    android:hint="温度1"/>
+                    android:text="温度1"/>
 
                 <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
-                    android:hint="温度2"/>
+                    android:text="温度2"/>
 
                 <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
-                    android:hint="温度3"/>
+                    android:text="温度3"/>
 
                 <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
-                    android:hint="温度4"/>
+                    android:text="温度4"/>
 
                 <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
-                    android:hint="温度5"/>
+                    android:text="温度5"/>
 
                 <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
-                    android:hint="转速"/>
+                    android:text="转速"/>
 
             </LinearLayout>
 
@@ -70,27 +70,27 @@
 
                 <EditText
                     android:id="@+id/MainTemp1"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/MainTemp2"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/MainTemp3"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/MainTemp4"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/MainTemp5"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/Mainspeed"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
             </LinearLayout>
 
@@ -108,27 +108,27 @@
 
                 <EditText
                     android:id="@+id/SUPPTemp11"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp12"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp13"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp14"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp15"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPspeed1"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
             </LinearLayout>
 
@@ -146,28 +146,46 @@
 
                 <EditText
                     android:id="@+id/SUPPTemp21"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp22"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp23"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp24"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPTemp25"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
                 <EditText
                     android:id="@+id/SUPPspeed2"
-                    style="@style/TextStyle"/>
+                    style="@style/EditStyle"/>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.angcyo.uiview.widget.RTextView
+                    style="@style/TextStyle"
+                    android:layout_width="100dp"
+                    android:layout_weight="0"
+                    android:text="牵引转速:"/>
+
+                <EditText
+                    android:id="@+id/Qyspeed1"
+                    style="@style/EditStyle"
+                    android:layout_width="200dp"
+                    android:layout_weight="0"/>
             </LinearLayout>
 
             <LinearLayout
@@ -185,21 +203,21 @@
                 <com.angcyo.uiview.widget.RTextView
                     android:id="@+id/focus_tip_view"
                     style="@style/TextStyle"
-                    android:hint="型号(必填)"
-                    android:tag="nonull"/>
+                    android:tag="nonull"
+                    android:text="型号(必填)"/>
 
                 <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
-                    android:hint="边长(选填)"
-                    android:tag="nonull"/>
+                    android:tag="nonull"
+                    android:text="厘数(选填)"/>
 
                 <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
-                    android:hint="厘数(选填)"
-                    android:tag="nonull"/>
+                    android:tag="nonull"
+                    android:text="边长(选填)"/>
 
                 <com.angcyo.uiview.widget.RTextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="@dimen/base_xhdpi"
                     android:paddingEnd="@dimen/base_xhdpi"
                     android:paddingStart="@dimen/base_xhdpi"
@@ -212,7 +230,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                tools:visibility="gone">
+                tools:visibility="visible">
 
                 <com.angcyo.uiview.widget.RTextView
                     style="@style/TextStyle"
@@ -222,26 +240,28 @@
 
                 <EditText
                     android:id="@+id/ProductType"
-                    style="@style/TextStyle"
-                    android:inputType="text"
-                    android:tag="nonull"/>
-
-                <EditText
-                    android:id="@+id/bianchang"
-                    style="@style/TextStyle"
+                    style="@style/EditStyle"
                     android:inputType="text"
                     android:tag="nonull"/>
 
                 <EditText
                     android:id="@+id/Lshou"
-                    style="@style/TextStyle"
+                    style="@style/EditStyle"
+                    android:inputType="text"
+                    android:tag="nonull"/>
+
+                <EditText
+                    android:id="@+id/bianchang"
+                    style="@style/EditStyle"
                     android:inputType="text"
                     android:tag="nonull"/>
 
                 <com.angcyo.uiview.widget.Button
                     android:id="@+id/search_button"
-                    android:layout_width="wrap_content"
+                    style="@style/TextStyle"
+                    android:layout_width="60dp"
                     android:layout_height="@dimen/base_35dpi"
+                    android:layout_weight="0"
                     android:paddingEnd="@dimen/base_xhdpi"
                     android:paddingStart="@dimen/base_xhdpi"
                     android:text="查询"/>
@@ -311,7 +331,7 @@
 
                 <com.angcyo.uiview.widget.RTextView
                     android:id="@+id/tip_view"
-                    style="@style/BaseMainTextStyle"
+                    style="@style/TextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -359,22 +379,22 @@
                             style="@style/TextStyle"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:hint="型号"
-                            android:tag="nonull"/>
+                            android:tag="nonull"
+                            android:text="型号"/>
 
                         <com.angcyo.uiview.widget.RTextView
                             style="@style/TextStyle"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:hint="边长"
-                            android:tag="nonull"/>
+                            android:tag="nonull"
+                            android:text="边长"/>
 
                         <com.angcyo.uiview.widget.RTextView
                             style="@style/TextStyle"
                             android:layout_width="0dp"
                             android:layout_weight="1"
-                            android:hint="厘数"
-                            android:tag="nonull"/>
+                            android:tag="nonull"
+                            android:text="厘数"/>
 
                     </LinearLayout>
 

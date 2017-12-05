@@ -37,6 +37,7 @@ data class ProcBean(
         var SUPPTemp25: Int = 0, // decimal =0,--辅机2温度5
         var SUPPspeed1: Int = 0, // decimal =0,--辅机1转速
         var SUPPspeed2: Int = 0, // decimal =0,--辅机2转速
+        var Qyspeed1: Int = 0, // 2017-12-05
         var Memob: String = "no", // text =0,  --备注
         var Pict01: String = "nopic" // text  --图片
 )

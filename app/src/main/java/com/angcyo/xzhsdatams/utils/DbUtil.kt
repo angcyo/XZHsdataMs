@@ -270,7 +270,7 @@ object DbUtil {
      */
 
     fun proc_add(procBean: ProcBean): Boolean {
-        var result = Jtds.prepareCall_update("proc_add", 23,
+        var result = Jtds.prepareCall_update("proc_add", 24,
                 { jtdsCallableStatement ->
                     jtdsCallableStatement.setString("@ProductType", procBean.ProductType)
                     jtdsCallableStatement.setString("@Lshou", procBean.Lshou)
@@ -293,6 +293,7 @@ object DbUtil {
                     jtdsCallableStatement.setInt("@SUPPTemp25", procBean.SUPPTemp25)
                     jtdsCallableStatement.setInt("@SUPPspeed1", procBean.SUPPspeed1)
                     jtdsCallableStatement.setInt("@SUPPspeed2", procBean.SUPPspeed2)
+                    jtdsCallableStatement.setInt("@Qyspeed1", procBean.Qyspeed1)
                     jtdsCallableStatement.setString("@Memob", procBean.Memob)
                     jtdsCallableStatement.setString("@Pict01", procBean.Pict01)
                 })
@@ -300,7 +301,7 @@ object DbUtil {
     }
 
     fun proc_modi(id: Int, procBean: ProcBean): Boolean {
-        var result = Jtds.prepareCall_update("proc_modi", 24,
+        var result = Jtds.prepareCall_update("proc_modi", 25,
                 { jtdsCallableStatement ->
                     jtdsCallableStatement.setInt("@id", id)
                     jtdsCallableStatement.setString("@ProductType", procBean.ProductType)
@@ -324,6 +325,7 @@ object DbUtil {
                     jtdsCallableStatement.setInt("@SUPPTemp25", procBean.SUPPTemp25)
                     jtdsCallableStatement.setInt("@SUPPspeed1", procBean.SUPPspeed1)
                     jtdsCallableStatement.setInt("@SUPPspeed2", procBean.SUPPspeed2)
+                    jtdsCallableStatement.setInt("@Qyspeed1", procBean.Qyspeed1)
                     jtdsCallableStatement.setString("@Memob", procBean.Memob)
                     jtdsCallableStatement.setString("@Pict01", procBean.Pict01)
                 })
@@ -371,6 +373,7 @@ object DbUtil {
                         jtdsResultSet.getInt("SUPPTemp25"),
                         jtdsResultSet.getInt("SUPPspeed1"),
                         jtdsResultSet.getInt("SUPPspeed2"),
+                        jtdsResultSet.getInt("Qyspeed1"),
                         jtdsResultSet.getString("Memob"),
                         jtdsResultSet.getString("Pict01")
                 )
