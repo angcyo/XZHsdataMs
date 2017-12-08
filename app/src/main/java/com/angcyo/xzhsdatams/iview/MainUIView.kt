@@ -120,7 +120,7 @@ class MainUIView : BaseContentUIView() {
     }
 
     override fun getTitleBar(): TitleBarPattern {
-        return super.getTitleBar().setTitleStringLength(30)
+        return super.getTitleBar().setTitleStringLength(30).setTitleSize(20 * density())
                 .addRightItem(TitleBarPattern.TitleBarItem("修改密码") {
                     startIView(object : ModifyPasswordDialog() {
                         override fun onModifyPassword(old: String, new: String) {
@@ -150,14 +150,14 @@ class MainUIView : BaseContentUIView() {
                             )
                         }
                     })
-                })
+                }.setTextSize(16 * density()))
                 .addRightItem(TitleBarPattern.TitleBarItem("切换方向") {
                     if (screenOrientation == ORIENTATION_PORTRAIT) {
                         mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                     } else {
                         mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
                     }
-                })
+                }.setTextSize(16 * density()))
     }
 
     override fun inflateContentLayout(baseContentLayout: ContentLayout?, inflater: LayoutInflater?) {
