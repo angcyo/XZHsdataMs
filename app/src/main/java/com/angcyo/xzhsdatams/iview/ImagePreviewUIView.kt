@@ -4,9 +4,10 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.animation.Animation
-import com.angcyo.uiview.base.UIBaseView
 import com.angcyo.uiview.container.ContentLayout
+import com.angcyo.uiview.model.AnimParam
 import com.angcyo.uiview.model.TitleBarPattern
+import com.angcyo.uiview.resources.AnimUtil
 import com.angcyo.xzhsdatams.R
 import com.github.chrisbanes.photoview.PhotoView
 
@@ -18,7 +19,7 @@ class ImagePreviewUIView(val bitmap: Bitmap) : BaseContentUIView() {
     override fun getTitleBar(): TitleBarPattern =
             super.getTitleBar().setFloating(true).setTitleBarBGColor(Color.TRANSPARENT).setTitleString("")
 
-    override fun inflateContentLayout(baseContentLayout: ContentLayout?, inflater: LayoutInflater?) {
+    override fun inflateContentLayout(baseContentLayout: ContentLayout, inflater: LayoutInflater) {
         inflate(R.layout.image_preview_layout)
     }
 
@@ -30,9 +31,9 @@ class ImagePreviewUIView(val bitmap: Bitmap) : BaseContentUIView() {
         bitmapView.setImageBitmap(bitmap)
     }
 
-    override fun loadStartAnimation(): Animation = UIBaseView.createClipEnterAnim(0.2f)
-    override fun loadFinishAnimation(): Animation = UIBaseView.createClipExitAnim(0.2f)
-    override fun loadOtherEnterAnimation(): Animation = UIBaseView.createOtherEnterNoAnim()
-    override fun loadOtherExitAnimation(): Animation = UIBaseView.createOtherExitNoAnim()
+    override fun loadStartAnimation(animParam: AnimParam): Animation = AnimUtil.createClipEnterAnim(0.2f)
+    override fun loadFinishAnimation(animParam: AnimParam): Animation = AnimUtil.createClipExitAnim(0.2f)
+    override fun loadOtherEnterAnimation(animParam: AnimParam): Animation = AnimUtil.createOtherEnterNoAnim()
+    override fun loadOtherExitAnimation(animParam: AnimParam): Animation = AnimUtil.createOtherExitNoAnim()
 
 }

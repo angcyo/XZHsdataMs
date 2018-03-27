@@ -15,7 +15,7 @@ import com.angcyo.xzhsdatams.R
 open class ModifyPasswordDialog : UIIDialogImpl() {
     override fun getGravity(): Int = Gravity.TOP
 
-    override fun inflateDialogView(dialogRootLayout: FrameLayout?, inflater: LayoutInflater?): View =
+    override fun inflateDialogView(dialogRootLayout: FrameLayout, inflater: LayoutInflater): View =
             inflate(R.layout.modify_password_layout)
 
 

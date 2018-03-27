@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.PopupWindow
 import android.widget.TextView
+import com.angcyo.github.utilcode.utils.SingleTextWatcher
 import com.angcyo.library.okhttp.Ok
 import com.angcyo.library.utils.L
 import com.angcyo.uiview.Root
@@ -20,6 +21,7 @@ import com.angcyo.uiview.container.ContentLayout
 import com.angcyo.uiview.container.UIParam
 import com.angcyo.uiview.dialog.UIFileSelectorDialog
 import com.angcyo.uiview.dialog.UIInputDialog
+import com.angcyo.uiview.model.TitleBarItem
 import com.angcyo.uiview.model.TitleBarPattern
 import com.angcyo.uiview.net.RException
 import com.angcyo.uiview.net.RFunc
@@ -30,7 +32,6 @@ import com.angcyo.uiview.recycler.RRecyclerView
 import com.angcyo.uiview.recycler.adapter.RBaseAdapter
 import com.angcyo.uiview.utils.RUtils
 import com.angcyo.uiview.utils.T_
-import com.angcyo.uiview.utils.string.SingleTextWatcher
 import com.angcyo.uiview.widget.Button
 import com.angcyo.uiview.widget.ExEditText
 import com.angcyo.uiview.widget.GlideImageView
@@ -121,7 +122,7 @@ class MainUIView : BaseContentUIView() {
 
     override fun getTitleBar(): TitleBarPattern {
         return super.getTitleBar().setTitleStringLength(30).setTitleSize(20 * density())
-                .addRightItem(TitleBarPattern.TitleBarItem("修改密码") {
+                .addRightItem(TitleBarItem("修改密码") {
                     startIView(object : ModifyPasswordDialog() {
                         override fun onModifyPassword(old: String, new: String) {
                             super.onModifyPassword(old, new)
@@ -151,7 +152,7 @@ class MainUIView : BaseContentUIView() {
                         }
                     })
                 }.setTextSize(16 * density()))
-                .addRightItem(TitleBarPattern.TitleBarItem("切换方向") {
+                .addRightItem(TitleBarItem("切换方向") {
                     if (screenOrientation == ORIENTATION_PORTRAIT) {
                         mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
                     } else {
@@ -160,7 +161,7 @@ class MainUIView : BaseContentUIView() {
                 }.setTextSize(16 * density()))
     }
 
-    override fun inflateContentLayout(baseContentLayout: ContentLayout?, inflater: LayoutInflater?) {
+    override fun inflateContentLayout(baseContentLayout: ContentLayout, inflater: LayoutInflater) {
         inflate(R.layout.activity_main)
     }
 
