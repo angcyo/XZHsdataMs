@@ -1,6 +1,6 @@
 include ':app'
 include ':RLibrary:uiview'
-include ':RLibrary:github'
 include ':RLibrary:library'
+include ':RLibrary:github'
 include ':RLibrary:rcode'
-
+include ':RLibrary:zxingzbar'
