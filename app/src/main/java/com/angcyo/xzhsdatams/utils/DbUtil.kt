@@ -301,7 +301,7 @@ object DbUtil {
     }
 
     fun proc_modi(id: Int, procBean: ProcBean): Boolean {
-        var result = Jtds.prepareCall_update("proc_modi", 25,
+        var result = Jtds.prepareCall_update("proc_Modi", 25,
                 { jtdsCallableStatement ->
                     jtdsCallableStatement.setInt("@id", id)
                     jtdsCallableStatement.setString("@ProductType", procBean.ProductType)
@@ -382,7 +382,7 @@ object DbUtil {
         }
 
         if (Lshou.isEmpty() && Bianchang.isEmpty()) {
-            Jtds.prepareCall_set("proc_search", 3,
+            Jtds.prepareCall_set("proc_query", 3,
                     { jtdsCallableStatement ->
                         jtdsCallableStatement.setString("ProductType", ProductType)
                         jtdsCallableStatement.setString("Lshou", "")
@@ -392,7 +392,7 @@ object DbUtil {
                         onResult(jtdsResultSet)
                     })
         } else {
-            Jtds.prepareCall_set("proc_search", 3,
+            Jtds.prepareCall_set("proc_query", 3,
                     { jtdsCallableStatement ->
                         jtdsCallableStatement.setString("ProductType", ProductType)
                         jtdsCallableStatement.setString("Lshou", Lshou)
