@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.text.TextUtils
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.EditText
@@ -19,6 +20,7 @@ import com.angcyo.uiview.Root
 import com.angcyo.uiview.base.RPopupWindow
 import com.angcyo.uiview.container.ContentLayout
 import com.angcyo.uiview.container.UIParam
+import com.angcyo.uiview.dialog.UICustomDialog
 import com.angcyo.uiview.dialog.UIFileSelectorDialog
 import com.angcyo.uiview.dialog.UIInputDialog
 import com.angcyo.uiview.model.TitleBarItem
@@ -36,6 +38,7 @@ import com.angcyo.uiview.widget.Button
 import com.angcyo.uiview.widget.ExEditText
 import com.angcyo.uiview.widget.GlideImageView
 import com.angcyo.uiview.widget.TitleBarLayout
+import com.angcyo.xzhsdatams.App
 import com.angcyo.xzhsdatams.R
 import com.angcyo.xzhsdatams.bean.ProcBean
 import com.angcyo.xzhsdatams.utils.BitmapAndStringUtils
@@ -121,7 +124,35 @@ class MainUIView : BaseContentUIView() {
     }
 
     override fun getTitleBar(): TitleBarPattern {
-        return super.getTitleBar().setTitleStringLength(30).setTitleSize(20 * density())
+        return super.getTitleBar()
+                .setTitleStringLength(30)
+                .setTitleSize(20 * density())
+                .addLeftItem(TitleBarItem.build("设置") {
+                    startIView(UICustomDialog.build(R.layout.setting_layout)
+                            .onInitDialog(object : UICustomDialog.OnInitDialog {
+                                override fun onInitDialog(window: UICustomDialog, viewHolder: RBaseViewHolder) {
+                                    viewHolder.tv(R.id.ip_view).text = App.ip
+                                    viewHolder.tv(R.id.port_view).text = App.port
+                                    viewHolder.tv(R.id.db_name_view).text = App.db_name
+                                    viewHolder.tv(R.id.name_view).text = App.name
+                                    viewHolder.tv(R.id.pw_view).text = App.pw
+
+                                    viewHolder.click(R.id.save_button) {
+                                        App.ip = viewHolder.tv(R.id.ip_view).text.toString()
+                                        App.port = viewHolder.tv(R.id.port_view).text.toString()
+                                        App.db_name = viewHolder.tv(R.id.db_name_view).text.toString()
+                                        App.name = viewHolder.tv(R.id.name_view).text.toString()
+                                        App.pw = viewHolder.tv(R.id.pw_view).text.toString()
+                                        App.init()
+
+                                        window.finishDialog()
+                                    }
+                                }
+                            })
+                            .setGravity(Gravity.TOP)
+                    )
+
+                }.setTextSize(16 * density()))
                 .addRightItem(TitleBarItem("修改密码") {
                     startIView(object : ModifyPasswordDialog() {
                         override fun onModifyPassword(old: String, new: String) {
@@ -678,7 +709,7 @@ class MainUIView : BaseContentUIView() {
                             f.name == "bianchang" ||
                             f.name == "Lshou" ||
                             f.name == "ProductType"
-                            ) {
+                    ) {
                         f.set(procBean, view.text.toString())
                     } else if (TextUtils.isEmpty(view.text) && f.name != "Memob") {
                         f.setInt(procBean, 0)
@@ -886,5 +917,9 @@ class MainUIView : BaseContentUIView() {
             mActivity.finish()
         }
         runCount++
+    }
+
+    override fun getTitleShowString(): String {
+        return RUtils.getAppName()
     }
 }
